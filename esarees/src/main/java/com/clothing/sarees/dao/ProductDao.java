@@ -2,18 +2,15 @@ package com.clothing.sarees.dao;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.Id;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
+import com.clothing.sarees.model.Product;
 
-import com.clothing.sarees.model.Customer;
+public class ProductDao implements ProductDaoInterface<Product, Serializable> {
 
-public class CustomerDao implements CustomerDaoInterface<Customer, Integer> {
-
+	
 	private Session currentSession;
 	private Transaction currentTransaction;
 
@@ -58,35 +55,37 @@ public class CustomerDao implements CustomerDaoInterface<Customer, Integer> {
 	public Transaction getCurrentTransaction() {
 		return currentTransaction;
 	}
-
-	public void persist(Customer entity) {
+	
+	public void persist(Product entity) {
 		getCurrentSession().save(entity);
+		
 	}
 
-	public void update(Customer entity) {
-		getCurrentSession().update(entity);
+	public void update(Product entity) {
+        getCurrentSession().update(entity);		
 	}
 
-	public Customer findById(int id) {
-		Customer Customer = (Customer) getCurrentSession().get(Customer.class, id);
-		return Customer;
+	public Product findById(int id) {
+		Product product= (Product) getCurrentSession().get(Product.class, id);
+		return product;
 	}
 
-	public void delete(Customer entity) {
+	public void delete(Product entity) {
 		getCurrentSession().delete(entity);
-
+		
 	}
 
-	public List<Customer> findAll() {
-		List<Customer> Customer = (List<Customer>) getCurrentSession().createQuery("from Customer").list();
-		return Customer;
+	public List<Product> findAll() {
+		List<Product> products = (List<Product>) getCurrentSession().createQuery("from Product").list();
+		return products;
 	}
 
 	public void deleteAll() {
-		 List<Customer> entityList = findAll();
-		  for (Customer entity : entityList) {
-		  delete(entity);
-	}
+		List<Product> products=findAll();
+		for(Product product:products) {
+			delete(product);
+		}
+		
 	}
 
 }
